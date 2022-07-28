@@ -12,7 +12,7 @@ const storage = multer.diskStorage({
   destination: function (request, file, cb) {
     const { platform } = request.params;
 
-    const filePath = `uploads/${platform}`;
+    const filePath = path.resolve(__dirname, '..', 'uploads', platform);
     
     fs.rmSync(filePath, { recursive: true, force: true });
 
@@ -32,7 +32,7 @@ const upload = multer({ storage });
 app.get('/download/:platform', (request, response) => {
   const { platform } = request.params;
 
-  const [fileName] = fs.readdirSync(`uploads/${platform}`);
+  const [fileName] = fs.readdirSync(path.resolve(__dirname, '..', 'uploads', platform));
 
   const filePath = path.resolve(__dirname, '..', 'uploads', platform, fileName);
 
